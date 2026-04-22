@@ -1,6 +1,27 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ThumbsUp, ThumbsDown, Info, Zap, Scale } from 'lucide-react';
 import { calculatePolicyMatch } from '../utils/electoralLogic';
 
-// ... (policies and candidates remain same)
+const policies = [
+    { id: 'infra', title: "Infrastructure", question: "Should we prioritize high-speed rail over local road repairs?" },
+    { id: 'edu', title: "Education", question: "Increase funding for digital literacy programs in primary schools?" },
+    { id: 'health', title: "Healthcare", question: "Transition to a fully digital, centralized health record system?" },
+    { id: 'env', title: "Environment", question: "Implement strict carbon taxes on heavy industrial manufacturing?" }
+];
+
+const candidates = [
+    {
+        name: "Candidate A",
+        stance: { infra: true, edu: true, health: false, env: true },
+        motto: "The Future is Digital"
+    },
+    {
+        name: "Candidate B",
+        stance: { infra: false, edu: false, health: true, env: false },
+        motto: "Back to the Basics"
+    }
+];
 
 const PolicyMatcher = ({ onMatchChange }) => {
     const [currentIdx, setCurrentIdx] = useState(0);

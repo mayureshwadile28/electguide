@@ -1,6 +1,34 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, ClipboardList, ChevronDown } from 'lucide-react';
 import { checkEligibility } from '../utils/electoralLogic';
 
-// ... (steps remain same)
+const steps = [
+    {
+        id: 'age',
+        question: "How old are you?",
+        options: [
+            { label: "Under 18", value: "minor" },
+            { label: "18 or older", value: "adult" }
+        ]
+    },
+    {
+        id: 'citizenship',
+        question: "Are you a legal citizen of this country?",
+        options: [
+            { label: "Yes", value: "citizen" },
+            { label: "No", value: "non-citizen" }
+        ]
+    },
+    {
+        id: 'residency',
+        question: "Do you have a permanent place of residence?",
+        options: [
+            { label: "Yes", value: "resident" },
+            { label: "No", value: "non-resident" }
+        ]
+    }
+];
 
 const EligibilityCalculator = ({ onStatusChange }) => {
     const [currentStep, setCurrentStep] = useState(0);

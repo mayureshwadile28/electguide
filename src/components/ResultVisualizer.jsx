@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trophy, Info, X, Sparkles, RefreshCcw } from 'lucide-react';
 import { analyzeCivicPortfolio } from '../services/GeminiService';
 
 const ResultVisualizer = ({ votesData, civicData }) => {
