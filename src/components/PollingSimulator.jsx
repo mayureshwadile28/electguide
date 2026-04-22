@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import { Briefcase, XCircle, CheckCircle, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
 import { validateBagItems } from '../utils/electoralLogic';
