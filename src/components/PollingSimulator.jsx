@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
-import { Briefcase, XCircle, CheckCircle, Smartphone, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
+import { Briefcase, XCircle, CheckCircle, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
 import { validateBagItems } from '../utils/electoralLogic';
 
 const items = [
@@ -20,12 +20,11 @@ function DraggableItem({ item, isUsed }) {
     const style = transform ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         zIndex: 10
-    } : undefined;
+    } : {};
 
     return (
         <div
             ref={setNodeRef}
-            style={style}
             {...listeners}
             {...attributes}
             className={`glass ${isUsed ? 'opacity-30' : 'cursor-grab active:cursor-grabbing'}`}
