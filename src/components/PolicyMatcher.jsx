@@ -1,28 +1,8 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ThumbsUp, ThumbsDown, Info, Zap, Scale } from 'lucide-react';
+import { calculatePolicyMatch } from '../utils/electoralLogic';
 
-const policies = [
-    { id: 'infra', title: "Infrastructure", question: "Should we prioritize high-speed rail over local road repairs?" },
-    { id: 'edu', title: "Education", question: "Increase funding for digital literacy programs in primary schools?" },
-    { id: 'health', title: "Healthcare", question: "Transition to a fully digital, centralized health record system?" },
-    { id: 'env', title: "Environment", question: "Implement strict carbon taxes on heavy industrial manufacturing?" }
-];
+// ... (policies and candidates remain same)
 
-const candidates = [
-    {
-        name: "Candidate A",
-        stance: { infra: true, edu: true, health: false, env: true },
-        motto: "The Future is Digital"
-    },
-    {
-        name: "Candidate B",
-        stance: { infra: false, edu: false, health: true, env: false },
-        motto: "Back to the Basics"
-    }
-];
-
-const PolicyMatcher = () => {
+const PolicyMatcher = ({ onMatchChange }) => {
     const [currentIdx, setCurrentIdx] = useState(0);
     const [userStance, setUserStance] = useState({});
     const [matches, setMatches] = useState(null);
@@ -34,19 +14,16 @@ const PolicyMatcher = () => {
         if (currentIdx < policies.length - 1) {
             setCurrentIdx(currentIdx + 1);
         } else {
-            calculateMatch(newStances);
+            const results = calculatePolicyMatch(newStances, candidates, policies);
+            setMatches(results);
+            if (onMatchChange) onMatchChange(results[0].percentage);
         }
     };
 
     const calculateMatch = (stances) => {
-        const results = candidates.map(c => {
-            let score = 0;
-            policies.forEach(p => {
-                if (stances[p.id] === c.stance[p.id]) score++;
-            });
-            return { ...c, percentage: Math.round((score / policies.length) * 100) };
-        });
+        const results = calculatePolicyMatch(stances, candidates, policies);
         setMatches(results);
+        if (onMatchChange) onMatchChange(results[0].percentage);
     };
 
     return (

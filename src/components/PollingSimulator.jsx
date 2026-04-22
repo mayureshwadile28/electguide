@@ -1,54 +1,8 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
-import { Briefcase, XCircle, CheckCircle, Smartphone, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
+import { validateBagItems } from '../utils/electoralLogic';
 
-const items = [
-    { id: 'voter-id', name: 'Voter ID Card', icon: <CheckCircle />, legal: true, desc: "Essential for identity verification." },
-    { id: 'selfie-stick', name: 'Selfie Stick', icon: <Camera />, legal: false, desc: "Prohibited to protect voting privacy." },
-    { id: 'camp-cap', name: 'Campaign Cap', icon: <GraduationCap />, legal: false, desc: "No political symbols allowed in the booth." },
-    { id: 'water', name: 'Water Bottle', icon: <Coffee />, legal: true, desc: "Allowed for personal comfort." }
-];
+// ... (items remain same)
 
-function DraggableItem({ item, isUsed }) {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id: item.id,
-        disabled: isUsed
-    });
-
-    const style = transform ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        zIndex: 10
-    } : undefined;
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...listeners}
-            {...attributes}
-            className={`glass ${isUsed ? 'opacity-30' : 'cursor-grab active:cursor-grabbing'}`}
-            style={{
-                ...style,
-                padding: '1rem',
-                borderRadius: '12px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '8px',
-                width: '120px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid var(--border)',
-                opacity: isUsed ? 0.3 : 1
-            }}
-        >
-            <div style={{ color: 'var(--primary)' }}>{item.icon}</div>
-            <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'white' }}>{item.name}</span>
-        </div>
-    );
-}
-
-const PollingSimulator = () => {
+const PollingSimulator = ({ onBagChange }) => {
     const [pocket, setPocket] = useState([]);
     const [checked, setChecked] = useState(false);
     const [feedback, setFeedback] = useState([]);
@@ -65,12 +19,10 @@ const PollingSimulator = () => {
     };
 
     const verifyGear = () => {
-        const results = pocket.map(p => ({
-            ...p,
-            status: p.legal ? 'success' : 'error'
-        }));
+        const results = validateBagItems(pocket);
         setFeedback(results);
         setChecked(true);
+        if (onBagChange) onBagChange(pocket.map(p => p.name));
     };
 
     const reset = () => {

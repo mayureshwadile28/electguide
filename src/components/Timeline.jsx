@@ -55,9 +55,9 @@ const Timeline = () => {
   });
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', padding: '100px 0' }}>
+    <div ref={containerRef} role="complementary" aria-label="Democratic lifecycle timeline" style={{ position: 'relative', padding: '100px 0' }}>
       <div style={{ textAlign: 'center', marginBottom: '120px' }}>
-        <h2 style={{ fontSize: '3.5rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Path of Power</h2>
+        <h2 id="timeline-title" style={{ fontSize: '3.5rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Path of Power</h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>
           Follow the step-by-step lifecycle of how a democracy breathes and evolves.
         </p>
