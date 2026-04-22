@@ -82,3 +82,6 @@ npm run build
 ```
 
 **ElectGuide** — Protecting the future of democracy through education.
+
+# Election-Process-Education
+ElectGuide is a high-fidelity, interactive web application designed to transform how citizens understand and engage with the democratic process. Moving beyond static text, ElectGuide uses a "Learning through Interaction" philosophy, providing a synchronized journey from initial eligibility to the final declaration of election results.
