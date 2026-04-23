@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
 import { Printer, CheckCircle2 } from 'lucide-react';
 import canvasConfetti from 'canvas-confetti';
 
@@ -37,7 +37,7 @@ const EVMSandbox = ({ onVote, isConfirmedGlobal }) => {
         <div className="glass-card" style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', gap: '2rem', padding: '2rem' }}>
             {/* Mock EVM Unit */}
             <div style={{ flex: 1.2, background: '#1e293b', borderRadius: '20px', padding: '2rem', border: '4px solid #334155' }}>
-                <div style={{ background: '#0f172a', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', border: '2px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div aria-live="polite" style={{ background: '#0f172a', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', border: '2px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: '800', color: isConfirmed ? '#94a3b8' : '#4ade80' }}>
                         {isConfirmed ? "VOTE RECORDED" : "READY TO VOTE"}
                     </span>
@@ -51,6 +51,7 @@ const EVMSandbox = ({ onVote, isConfirmedGlobal }) => {
                             <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#0f172a', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>{c.symbol}</div>
                             <span style={{ flex: 1, fontWeight: '700', color: 'white' }}>{c.name}</span>
                             <button
+                                aria-label={`Select candidate ${c.name}`}
                                 onClick={() => !isConfirmed && setSelected(c)}
                                 disabled={isConfirmed}
                                 style={{

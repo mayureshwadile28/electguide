@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion /* eslint-disable-line no-unused-vars */ , useScroll, useSpring, useTransform } from 'framer-motion';
 import { UserPlus, Megaphone, Calendar, Landmark, CheckCircle, Search, ClipboardCheck } from 'lucide-react';
 
 const timelineData = [

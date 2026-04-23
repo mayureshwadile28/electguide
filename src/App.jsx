@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion /* eslint-disable-line no-unused-vars */  } from 'framer-motion';
 import { Vote, Globe, Sparkles, LayoutGrid, Milestone, Gamepad2, Landmark, BarChart, RefreshCcw } from 'lucide-react';
 import Timeline from './components/Timeline';
 import InteractivePillars from './components/InteractivePillars';

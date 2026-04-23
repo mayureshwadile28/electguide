@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
 import { CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, ClipboardList, ChevronDown } from 'lucide-react';
 import { checkEligibility } from '../utils/electoralLogic';
 
@@ -82,6 +82,7 @@ const EligibilityCalculator = ({ onStatusChange }) => {
                                 {steps[currentStep].options.map((option) => (
                                     <button
                                         key={option.value}
+                                        aria-label={`Select option: ${option.label}`}
                                         onClick={() => handleOption(option.value)}
                                         className="glass"
                                         style={{

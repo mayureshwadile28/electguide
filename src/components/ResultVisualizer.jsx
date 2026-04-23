@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
 import { Trophy, Info, X, Sparkles, RefreshCcw, BarChart as ChartIcon, Share2, Globe } from 'lucide-react';
 import { analyzeCivicPortfolio } from '../services/GeminiService';
 import { Chart } from 'react-google-charts';
@@ -26,29 +26,48 @@ const ResultVisualizer = ({ votesData, civicData }) => {
     const totalVotes = 1000;
     const progressFactor = progress / 100;
 
-    const displayResults = votesData.map(r => ({
-        ...r,
-        currentVotes: Math.round(r.votes * progressFactor)
-    }));
+    const displayResults = React.useMemo(() => {
+        return votesData.map(r => ({
+            ...r,
+            currentVotes: Math.round(r.votes * progressFactor)
+        }));
+    }, [votesData, progressFactor]);
 
-    const totalCounted = displayResults.reduce((acc, curr) => acc + curr.currentVotes, 0);
+    const totalCounted = React.useMemo(() => {
+        return displayResults.reduce((acc, curr) => acc + curr.currentVotes, 0);
+    }, [displayResults]);
+
     const isFinal = progress === 100;
-    const winner = isFinal ? [...displayResults].sort((a, b) => b.votes - a.votes)[0] : null;
+
+    const winner = React.useMemo(() => {
+        return isFinal ? [...displayResults].sort((a, b) => b.votes - a.votes)[0] : null;
+    }, [isFinal, displayResults]);
 
     React.useEffect(() => {
+        let isMounted = true;
         if (isFinal) {
             const runAnalysis = async () => {
                 setIsAnalyzing(true);
                 const analysis = await analyzeCivicPortfolio(civicData);
-                setAiAnalysis(analysis);
-                setIsAnalyzing(false);
-                setShowInsight(true);
+                if (isMounted) {
+                    setAiAnalysis(analysis);
+                    setIsAnalyzing(false);
+                    setShowInsight(true);
+                }
             };
             runAnalysis();
-        } else {
-            setShowInsight(false);
         }
-    }, [isFinal]);
+        return () => { isMounted = false; };
+    }, [isFinal, civicData]);
+
+    // Handle resetting showInsight when progress goes back
+    React.useEffect(() => {
+        if (!isFinal && showInsight) {
+            // This is an intentional reset, wrap it in setTimeout if needed but a direct state change when moving away from final is fine if handled safely.
+            const timeout = setTimeout(() => setShowInsight(false), 0);
+            return () => clearTimeout(timeout);
+        }
+    }, [isFinal, showInsight]);
 
     return (
         <div className="glass-card" role="region" aria-labelledby="results-title" style={{ maxWidth: '1000px', margin: '0 auto', padding: '3rem', position: 'relative' }}>
@@ -67,7 +86,7 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                     </div>
                     <div className="glass" style={{ padding: '1.5rem', borderRadius: '16px', border: isFinal ? `2px solid ${winner.color}` : '1px solid var(--border)', transition: '0.5s' }}>
                         <span id="label-status" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Election Status</span>
-                        <div aria-labelledby="label-status" style={{ fontSize: '1.25rem', fontWeight: '700', marginTop: '0.5rem', color: 'white' }}>
+                        <div aria-labelledby="label-status" aria-live="polite" style={{ fontSize: '1.25rem', fontWeight: '700', marginTop: '0.5rem', color: 'white' }}>
                             {isFinal ? `Victor: ${winner.name}` : progress < 20 ? "Audit Commenced" : "Live Synchronization..."}
                         </div>
                     </div>
@@ -115,6 +134,7 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                         </div>
                         <input
                             id="sync-slider"
+                            aria-label="Data Sync Slider"
                             type="range"
                             min="0"
                             max="100"
@@ -142,7 +162,7 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                     <h3 style={{ fontSize: '2rem', fontWeight: '900', color: 'white' }}>Official Auditor Visualization</h3>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
                     <div className="glass" style={{ padding: '1rem', borderRadius: '24px', background: 'rgba(0,0,0,0.2)' }}>
                         <Chart
                             chartType="PieChart"
@@ -179,6 +199,23 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                                 hAxis: { textStyle: { color: "white" }, gridlines: { color: "rgba(255,255,255,0.05)" } },
                                 vAxis: { textStyle: { color: "white" } },
                                 chartArea: { width: '70%', height: '70%' }
+                            }}
+                            width={"100%"}
+                            height={"300px"}
+                        />
+                    </div>
+                    <div className="glass" style={{ padding: '1rem', borderRadius: '24px', background: 'rgba(0,0,0,0.2)' }}>
+                        <Chart
+                            chartType="GeoChart"
+                            data={geoData}
+                            options={{
+                                region: 'IN', // India
+                                displayMode: 'regions',
+                                resolution: 'provinces',
+                                backgroundColor: 'transparent',
+                                colorAxis: { colors: ['#4ade80', '#818cf8', '#fb7185'] },
+                                datalessRegionColor: 'rgba(255,255,255,0.05)',
+                                tooltip: { textStyle: { color: '#0f172a' } }
                             }}
                             width={"100%"}
                             height={"300px"}
@@ -241,7 +278,7 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                                     </p>
                                 )}
                             </div>
-                            <button onClick={() => setShowInsight(false)} className="btn-primary" style={{ width: '100%', borderRadius: '12px' }}>
+                            <button aria-label="Complete journey and close insight" onClick={() => setShowInsight(false)} className="btn-primary" style={{ width: '100%', borderRadius: '12px' }}>
                                 Complete Journey
                             </button>
                         </motion.div>

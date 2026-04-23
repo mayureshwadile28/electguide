@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
 import { ThumbsUp, ThumbsDown, Info, Zap, Scale } from 'lucide-react';
 import { calculatePolicyMatch } from '../utils/electoralLogic';
 
@@ -39,12 +39,6 @@ const PolicyMatcher = ({ onMatchChange }) => {
             setMatches(results);
             if (onMatchChange) onMatchChange(results[0].percentage);
         }
-    };
-
-    const calculateMatch = (stances) => {
-        const results = calculatePolicyMatch(stances, candidates, policies);
-        setMatches(results);
-        if (onMatchChange) onMatchChange(results[0].percentage);
     };
 
     return (
