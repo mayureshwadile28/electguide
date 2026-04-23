@@ -1,9 +1,11 @@
-import { vi } from 'vitest';
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
-// Mock Vite env variables
-vi.stubGlobal('import.meta', {
-    env: {
-        VITE_GEMINI_API_KEY: 'test-key',
-    },
-});
+// Mock IntersectionObserver
+class IntersectionObserver {
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+globalThis.IntersectionObserver = IntersectionObserver;

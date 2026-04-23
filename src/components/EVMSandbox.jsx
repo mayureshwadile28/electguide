@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
 import { Printer, CheckCircle2 } from 'lucide-react';
 import canvasConfetti from 'canvas-confetti';
@@ -10,14 +10,14 @@ const candidates = [
     { id: 4, name: "Independent", symbol: "👤", color: "#94a3b8" }
 ];
 
-const EVMSandbox = ({ onVote, isConfirmedGlobal }) => {
+const EVMSandbox = React.memo(({ onVote, isConfirmedGlobal }) => {
     const [selected, setSelected] = useState(null);
     const [isCasting, setIsCasting] = useState(false);
     const [isConfirmedInternal, setIsConfirmedInternal] = useState(false);
 
-    const isConfirmed = isConfirmedInternal || isConfirmedGlobal;
+    const isConfirmed = useMemo(() => isConfirmedInternal || isConfirmedGlobal, [isConfirmedInternal, isConfirmedGlobal]);
 
-    const handleVote = () => {
+    const handleVote = useCallback(() => {
         if (!selected) return;
         setIsCasting(true);
         setTimeout(() => {
@@ -31,22 +31,23 @@ const EVMSandbox = ({ onVote, isConfirmedGlobal }) => {
                 colors: ['#818cf8', '#fb7185', '#4ade80']
             });
         }, 2000);
-    };
+    }, [selected, onVote]);
 
     return (
-        <div className="glass-card" style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', gap: '2rem', padding: '2rem' }}>
+        <div className="glass-card" role="region" aria-labelledby="evm-title" style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', gap: '2rem', padding: '2rem' }}>
+            <h3 id="evm-title" className="sr-only">Electronic Voting Machine Simulator</h3>
             {/* Mock EVM Unit */}
             <div style={{ flex: 1.2, background: '#1e293b', borderRadius: '20px', padding: '2rem', border: '4px solid #334155' }}>
-                <div aria-live="polite" style={{ background: '#0f172a', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', border: '2px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div aria-live="polite" role="status" style={{ background: '#0f172a', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', border: '2px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: '800', color: isConfirmed ? '#94a3b8' : '#4ade80' }}>
                         {isConfirmed ? "VOTE RECORDED" : "READY TO VOTE"}
                     </span>
                     <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: isConfirmed ? '#1e293b' : '#4ade80', boxShadow: isConfirmed ? 'none' : '0 0 10px #4ade80' }}></div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div role="list" aria-label="Candidates List" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {candidates.map(c => (
-                        <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: '#334155', padding: '1rem', borderRadius: '12px' }}>
+                        <div key={c.id} role="listitem" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: '#334155', padding: '1rem', borderRadius: '12px' }}>
                             <span style={{ width: '30px', fontWeight: '900', color: '#94a3b8' }}>{c.id}</span>
                             <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#0f172a', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>{c.symbol}</div>
                             <span style={{ flex: 1, fontWeight: '700', color: 'white' }}>{c.name}</span>
@@ -104,6 +105,6 @@ const EVMSandbox = ({ onVote, isConfirmedGlobal }) => {
             </div>
         </div>
     );
-};
+});
 
 export default EVMSandbox;
