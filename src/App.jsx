@@ -13,6 +13,7 @@ import EVMSandbox from './components/EVMSandbox';
 import ResultVisualizer from './components/ResultVisualizer';
 import VoterEducation from './components/VoterEducation';
 import PollingStationLocator from './components/PollingStationLocator';
+import CivicIntelligence from './components/CivicIntelligence';
 
 const initialVotes = [
   { name: 'Unity Party', votes: 440, color: '#818cf8' },
@@ -148,6 +149,11 @@ function App() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12rem' }}>
+            <article id="civic-intel" aria-labelledby="title-civic">
+              <ModuleHeader icon={<Globe size={32} />} title="00. Civic Intelligence" desc="Access live institutional data about your local representatives and upcoming elections." />
+              <CivicIntelligence />
+            </article>
+
             <article id="step1" aria-labelledby="title-step1">
               <ModuleHeader icon={<Milestone size={32} />} title="01. Eligibility Audit" desc="Perform a self-verification of your voting status based on citizenship and age." />
               <EligibilityCalculator onStatusChange={(s) => updateCivicData('eligibility', s)} />
