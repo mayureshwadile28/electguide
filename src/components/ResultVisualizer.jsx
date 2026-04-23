@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Info, X, Sparkles, RefreshCcw, BarChart as ChartIcon, Share2, Globe } from 'lucide-react';
-import { analyzeCivicPortfolio } from '../services/GeminiService';
+import { Trophy, Info, X, Sparkles, RefreshCcw, BarChart as ChartIcon, Share2, Globe, Heart, FileText } from 'lucide-react';
 import { Chart } from 'react-google-charts';
 
 // Simulated regional turnout data for Google GeoChart
@@ -20,8 +19,7 @@ const geoData = [
 const ResultVisualizer = ({ votesData, civicData }) => {
     const [progress, setProgress] = useState(0);
     const [showInsight, setShowInsight] = useState(false);
-    const [aiAnalysis, setAiAnalysis] = useState("");
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [democracyInsight, setDemocracyInsight] = useState("");
 
     const totalVotes = 1000;
     const progressFactor = progress / 100;
@@ -35,16 +33,15 @@ const ResultVisualizer = ({ votesData, civicData }) => {
     const isFinal = progress === 100;
     const winner = isFinal ? [...displayResults].sort((a, b) => b.votes - a.votes)[0] : null;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isFinal) {
-            const runAnalysis = async () => {
-                setIsAnalyzing(true);
-                const analysis = await analyzeCivicPortfolio(civicData);
-                setAiAnalysis(analysis);
-                setIsAnalyzing(false);
-                setShowInsight(true);
-            };
-            runAnalysis();
+            const hasMatch = civicData.vote === winner.name;
+            const message = hasMatch
+                ? "Your choice aligns with the democratic majority. This consensus forms the foundation of stable governance and collective progress."
+                : `The democratic majority has chosen ${winner.name}. In a representative democracy, the mandate of the many determines the victor, but your individual vote remains an essential record of your personal civic profile and political expression.`;
+
+            setDemocracyInsight(message);
+            setShowInsight(true);
         } else {
             setShowInsight(false);
         }
@@ -226,24 +223,26 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                             <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(129, 140, 248, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--primary)', margin: '0 auto 2rem' }}>
                                 <Sparkles size={32} />
                             </div>
-                            <h4 id="modal-title" style={{ fontSize: '1.75rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Smart Civic Analysis</h4>
+                            <h4 id="modal-title" style={{ fontSize: '1.75rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Institutional Democracy Insight</h4>
                             <div style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
-                                {isAnalyzing ? (
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', color: 'var(--text-secondary)' }}>
-                                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}>
-                                            <RefreshCcw size={24} />
-                                        </motion.div>
-                                        Evaluating your democratic journey with Gemini...
-                                    </div>
-                                ) : (
-                                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
-                                        {aiAnalysis}
-                                    </p>
-                                )}
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
+                                    {democracyInsight}
+                                </p>
                             </div>
-                            <button onClick={() => setShowInsight(false)} className="btn-primary" style={{ width: '100%', borderRadius: '12px' }}>
-                                Complete Journey
-                            </button>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <a
+                                    href="https://docs.google.com/forms/u/0/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn-primary"
+                                    style={{ width: '100%', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', textDecoration: 'none' }}
+                                >
+                                    <FileText size={18} /> Submit Official Feedback (Google Forms)
+                                </a>
+                                <button onClick={() => setShowInsight(false)} className="glass" style={{ width: '100%', borderRadius: '12px', padding: '1rem', color: 'white' }}>
+                                    Complete Journey
+                                </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

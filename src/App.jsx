@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import { Vote, Globe, Sparkles, LayoutGrid, Milestone, Gamepad2, Landmark, BarChart, RefreshCcw } from 'lucide-react';
 import Timeline from './components/Timeline';
 import InteractivePillars from './components/InteractivePillars';
-import BackgroundEffect from './components/BackgroundEffect';
+import Timeline from './components/Timeline';
+import InteractivePillars from './components/InteractivePillars';
+import GoogleWorkspaceSidebar from './components/GoogleWorkspaceSidebar';
 
 // Modules
 import EligibilityCalculator from './components/EligibilityCalculator';
@@ -55,9 +57,9 @@ function App() {
   };
 
   return (
-    <div key={appKey} className="app-container" style={{ position: 'relative' }}>
-      <BackgroundEffect />
-      <div className="mesh-gradient" />
+    <div key={appKey} className="app-container" style={{ position: 'relative', overflowX: 'hidden' }}>
+      <GoogleWorkspaceSidebar />
+      <div className="mesh-gradient" style={{ opacity: 0.5 }} />
 
       {/* Header - Semantic */}
       <header role="banner" className="glass-header" style={{
