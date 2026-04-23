@@ -61,10 +61,10 @@ const EligibilityCalculator = ({ onStatusChange }) => {
     };
 
     return (
-        <div className="glass-card" style={{ maxWidth: '600px', margin: '0 auto', minHeight: '450px', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ padding: '2rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'white' }}>Voter Eligibility Check</h3>
-                <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Step {currentStep + 1} of {steps.length}</span>
+        <div className="glass-card" role="region" aria-labelledby="audit-title" style={{ maxWidth: '800px', margin: '4rem auto', padding: '3rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                <h3 id="audit-title" style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '1rem', color: 'white' }}>Eligibility Audit</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>Standardized verification of institutional voting requirements.</p>
             </div>
 
             <div style={{ flex: 1, padding: '3rem', position: 'relative', overflow: 'hidden' }}>

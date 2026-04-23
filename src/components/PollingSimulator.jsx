@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import { Briefcase, XCircle, CheckCircle, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
 import { validateBagItems } from '../utils/electoralLogic';
@@ -27,6 +27,8 @@ function DraggableItem({ item, isUsed }) {
             ref={setNodeRef}
             {...listeners}
             {...attributes}
+            role="button"
+            aria-label={`Draggable item: ${item.name}. ${item.desc}`}
             className={`glass ${isUsed ? 'opacity-30' : 'cursor-grab active:cursor-grabbing'}`}
             style={{
                 ...style,
@@ -78,15 +80,15 @@ const PollingSimulator = ({ onBagChange }) => {
     };
 
     return (
-        <div className="glass-card" style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem' }}>
+        <div className="glass-card" role="region" aria-labelledby="simulator-title" style={{ maxWidth: '800px', margin: '4rem auto', padding: '3rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <h3 style={{ fontSize: '2rem', fontWeight: '900', marginBottom: '1rem', color: 'white' }}>Pack For Election Day</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Drag the items into your pocket, then check if they are legal!</p>
+                <h3 id="simulator-title" style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '1rem', color: 'white' }}>Polling Station Protocol</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>Drag the items into your pocket, then check if they are legal for entry!</p>
             </div>
 
             <DndContext onDragEnd={handleDragEnd}>
                 <div style={{ display: 'flex', gap: '4rem', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                    <div role="list" aria-label="Available items to carry" style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                         {items.map(item => (
                             <DraggableItem key={item.id} item={item} isUsed={pocket.some(p => p.id === item.id)} />
                         ))}
@@ -96,6 +98,7 @@ const PollingSimulator = ({ onBagChange }) => {
                         <DroppableZone pocket={pocket} />
                         <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
                             <button
+                                aria-label="Verify if items in your pocket are legal"
                                 onClick={verifyGear}
                                 disabled={pocket.length === 0 || checked}
                                 className="btn-primary"
@@ -103,8 +106,13 @@ const PollingSimulator = ({ onBagChange }) => {
                             >
                                 Verify My Gear
                             </button>
-                            <button onClick={reset} className="glass" style={{ padding: '0 1rem', borderRadius: '12px', border: '1px solid var(--border)', color: 'white' }}>
-                                <RefreshCcw size={18} />
+                            <button
+                                aria-label="Reset items"
+                                onClick={reset}
+                                className="glass"
+                                style={{ padding: '0 1rem', borderRadius: '12px', border: '1px solid var(--border)', color: 'white' }}
+                            >
+                                <RefreshCcw size={18} aria-hidden="true" />
                             </button>
                         </div>
                     </div>
@@ -116,24 +124,28 @@ const PollingSimulator = ({ onBagChange }) => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+                        role="alert"
+                        aria-live="polite"
+                        style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative' }}
                     >
                         {feedback.map(f => (
                             <div key={f.id} className="glass" style={{ padding: '1.25rem', borderRadius: '16px', border: `1px solid ${f.status === 'success' ? '#4ade80' : '#fb7185'}`, display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                {f.status === 'success' ? <CheckCircle color="#4ade80" /> : <XCircle color="#fb7185" />}
+                                {f.status === 'success' ? <CheckCircle color="#4ade80" aria-hidden="true" /> : <XCircle color="#fb7185" aria-hidden="true" />}
                                 <div style={{ flex: 1 }}>
                                     <div style={{ fontWeight: '700', color: 'white' }}>{f.name}: {f.status === 'success' ? 'Legal' : 'Illegal'}</div>
                                     <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{f.desc}</div>
                                 </div>
                                 {f.status === 'error' && (
-                                    <button onClick={reset} style={{ background: 'none', border: 'none', color: '#fb7185', fontSize: '0.8rem', fontWeight: '700', cursor: 'pointer' }}>Retry</button>
+                                    <button
+                                        aria-label={`Remove ${f.name} and retry`}
+                                        onClick={reset}
+                                        style={{ background: 'none', border: 'none', color: '#fb7185', fontSize: '0.8rem', fontWeight: '700', cursor: 'pointer' }}
+                                    >
+                                        Retry
+                                    </button>
                                 )}
                             </div>
                         ))}
-
-                        <button onClick={reset} className="glass" style={{ marginTop: '1rem', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border)', color: 'white', fontWeight: '700' }}>
-                            Reset and Try Again
-                        </button>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -147,6 +159,8 @@ function DroppableZone({ pocket }) {
     return (
         <div
             ref={setNodeRef}
+            role="status"
+            aria-label="Your voting bag pocket"
             style={{
                 height: '300px',
                 borderRadius: '30px',

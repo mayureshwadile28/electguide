@@ -48,10 +48,10 @@ const PolicyMatcher = ({ onMatchChange }) => {
     };
 
     return (
-        <div className="glass-card" style={{ maxWidth: '800px', margin: '0 auto', minHeight: '500px' }}>
+        <div className="glass-card" role="region" aria-labelledby="matcher-title" style={{ maxWidth: '800px', margin: '0 auto', minHeight: '500px' }}>
             <div style={{ padding: '2rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '800' }}>Policy Matcher Sandbox</h3>
-                <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{matches ? "Final Analysis" : `Topic ${currentIdx + 1} of ${policies.length}`}</span>
+                <h3 id="matcher-title" style={{ fontSize: '1.5rem', fontWeight: '800' }}>Policy Matcher Sandbox</h3>
+                <span role="status" aria-label="Progress" style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{matches ? "Final Analysis" : `Topic ${currentIdx + 1} of ${policies.length}`}</span>
             </div>
 
             <div style={{ padding: '3rem' }}>
@@ -95,7 +95,7 @@ const PolicyMatcher = ({ onMatchChange }) => {
                             </div>
                         </motion.div>
                     ) : (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} role="list" aria-label="Candidate match results">
                             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                                 <h4 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>Match Results</h4>
                                 <p style={{ color: 'var(--text-secondary)' }}>Based on your value choices, here is how you align with the sample candidates.</p>
@@ -103,7 +103,7 @@ const PolicyMatcher = ({ onMatchChange }) => {
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                                 {matches.map((m, i) => (
-                                    <div key={i} className="glass" style={{ padding: '2rem', borderRadius: '24px', border: i === 0 ? '1px solid var(--primary)' : '1px solid var(--border)' }}>
+                                    <div key={i} className="glass" role="listitem" style={{ padding: '2rem', borderRadius: '24px', border: i === 0 ? '1px solid var(--primary)' : '1px solid var(--border)' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h5 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'white' }}>{m.name}</h5>
                                             <span style={{ fontSize: '1.5rem', fontWeight: '900', color: i === 0 ? 'var(--primary)' : 'white' }}>{m.percentage}%</span>

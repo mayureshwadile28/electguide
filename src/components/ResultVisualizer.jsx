@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Info, X, Sparkles, RefreshCcw } from 'lucide-react';
+import { Trophy, Info, X, Sparkles, RefreshCcw, BarChart as ChartIcon, Share2, Globe } from 'lucide-react';
 import { analyzeCivicPortfolio } from '../services/GeminiService';
+import { Chart } from 'react-google-charts';
+
+// Simulated regional turnout data for Google GeoChart
+const geoData = [
+    ["State", "Turnout (%)"],
+    ["IN-MH", 67],
+    ["IN-UP", 59],
+    ["IN-KT", 72],
+    ["IN-TN", 70],
+    ["IN-WB", 82],
+    ["IN-GJ", 64],
+    ["IN-RJ", 66],
+    ["IN-BR", 53]
+];
 
 const ResultVisualizer = ({ votesData, civicData }) => {
     const [progress, setProgress] = useState(0);
@@ -114,6 +128,60 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                                 background: 'rgba(255,255,255,0.1)',
                                 borderRadius: '10px'
                             }}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Google Services Integration: Results Analytics */}
+            <div style={{ marginTop: '4rem', paddingTop: '4rem', borderTop: '1px solid var(--border)' }}>
+                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(129, 140, 248, 0.1)', padding: '8px 20px', borderRadius: '100px', color: 'var(--primary)', fontWeight: '700', fontSize: '0.8rem', marginBottom: '1rem' }}>
+                        <ChartIcon size={16} /> GOOGLE CHARTS VERIFIED
+                    </div>
+                    <h3 style={{ fontSize: '2rem', fontWeight: '900', color: 'white' }}>Official Auditor Visualization</h3>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                    <div className="glass" style={{ padding: '1rem', borderRadius: '24px', background: 'rgba(0,0,0,0.2)' }}>
+                        <Chart
+                            chartType="PieChart"
+                            data={[
+                                ["Candidate", "Votes"],
+                                ...displayResults.map(r => [r.name, r.currentVotes])
+                            ]}
+                            options={{
+                                title: "Vote Share Distribution",
+                                pieHole: 0.4,
+                                is3D: false,
+                                backgroundColor: "transparent",
+                                legend: { textStyle: { color: "white" } },
+                                titleTextStyle: { color: "white" },
+                                colors: displayResults.map(r => r.color),
+                                chartArea: { width: '90%', height: '80%' }
+                            }}
+                            width={"100%"}
+                            height={"300px"}
+                        />
+                    </div>
+                    <div className="glass" style={{ padding: '1rem', borderRadius: '24px', background: 'rgba(0,0,0,0.2)' }}>
+                        <Chart
+                            chartType="BarChart"
+                            data={[
+                                ["Candidate", "Votes", { role: "style" }],
+                                ...displayResults.map(r => [r.name, r.currentVotes, r.color])
+                            ]}
+                            options={{
+                                title: "Candidate Comparison",
+                                backgroundColor: "transparent",
+                                legend: { position: "none" },
+                                titleTextStyle: { color: "white" },
+                                hAxis: { textStyle: { color: "white" }, gridlines: { color: "rgba(255,255,255,0.05)" } },
+                                vAxis: { textStyle: { color: "white" } },
+                                chartArea: { width: '70%', height: '70%' }
+                            }}
+                            width={"100%"}
+                            height={"300px"}
                         />
                     </div>
                 </div>

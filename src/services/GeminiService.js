@@ -29,7 +29,10 @@ export const analyzeCivicPortfolio = async (data) => {
         const response = await result.response;
         return response.text();
     } catch (error) {
-        console.error("Gemini Analysis Error:", error);
+        console.error("DETAILED Gemini Error:", error);
+        if (error.message?.includes("model")) {
+            return "AI Analysis Error: The requested model version is currently restricted or unavailable. Please contact the administrator.";
+        }
         return "Our AI analysis service is temporarily offline. However, your journey towards democratic participation is noted and verified.";
     }
 };

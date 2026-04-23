@@ -11,6 +11,8 @@ import PolicyMatcher from './components/PolicyMatcher';
 import PollingSimulator from './components/PollingSimulator';
 import EVMSandbox from './components/EVMSandbox';
 import ResultVisualizer from './components/ResultVisualizer';
+import VoterEducation from './components/VoterEducation';
+import PollingStationLocator from './components/PollingStationLocator';
 
 const initialVotes = [
   { name: 'Unity Party', votes: 440, color: '#818cf8' },
@@ -81,25 +83,30 @@ function App() {
             alignItems: 'center',
             boxShadow: '0 8px 16px var(--primary-glow)'
           }}>
-            <Vote size={24} color="white" />
+            <Vote size={24} color="white" aria-hidden="true" />
           </div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: '800', letterSpacing: '-0.03em', color: 'white', margin: 0 }}>
             Elect<span style={{ color: 'var(--primary)' }}>Guide</span>
           </h1>
         </div>
 
-        <nav aria-label="Main Navigation" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
+        <nav aria-label="Main Navigation" role="navigation" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
           <button
-            aria-label="Reset entire simulation"
+            aria-label="Reset entire election simulation to start over"
+            title="Reset Simulation"
             onClick={handleReset}
             style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: '600' }}
           >
             <RefreshCcw size={16} /> Reset All
           </button>
-          <a href="#interactive" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }}>Simulation</a>
-          <a href="#timeline" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }}>Lifecycle</a>
-          <button aria-label="Active Resource Information" className="btn-primary" style={{ borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Active Guide <Globe size={18} />
+          <a href="#interactive" aria-label="Go to simulation modules" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }}>Simulation</a>
+          <a href="#timeline" aria-label="Go to democracy lifecycle timeline" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }}>Lifecycle</a>
+          <button
+            aria-label="Access active democratic guide"
+            className="btn-primary"
+            style={{ borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            Active Guide <Globe size={18} aria-hidden="true" />
           </button>
         </nav>
       </header>
@@ -121,8 +128,8 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', borderRadius: '100px', background: 'rgba(129, 140, 248, 0.1)', border: '1px solid rgba(129, 140, 248, 0.2)', color: 'var(--primary)', fontSize: '0.875rem', fontWeight: '600', marginBottom: '2rem' }}>
-              <Sparkles size={16} /> Advanced Election Resource
+            <div role="status" aria-label="App Status" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', borderRadius: '100px', background: 'rgba(129, 140, 248, 0.1)', border: '1px solid rgba(129, 140, 248, 0.2)', color: 'var(--primary)', fontSize: '0.875rem', fontWeight: '600', marginBottom: '2rem' }}>
+              <Sparkles size={16} aria-hidden="true" /> Advanced Election Resource
             </div>
             <h2 id="hero-title" style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', lineHeight: '1', fontWeight: '900', letterSpacing: '-0.05em', marginBottom: '2rem', color: 'white' }}>
               Democracy, <br />
@@ -164,6 +171,14 @@ function App() {
             <article id="step5" aria-labelledby="title-step5">
               <ModuleHeader icon={<BarChart size={32} />} title="05. Live Audit" desc="Visualizing the transition from individual ballots to a national majority." />
               <ResultVisualizer votesData={votesData} civicData={civicData} />
+            </article>
+
+            <article id="extra1">
+              <PollingStationLocator />
+            </article>
+
+            <article id="extra2">
+              <VoterEducation />
             </article>
           </div>
         </section>
