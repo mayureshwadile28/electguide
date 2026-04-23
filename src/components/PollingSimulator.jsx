@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion /* eslint-disable-line no-unused-vars */ , AnimatePresence } from 'framer-motion';
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import { DndContext, useDraggable, useDroppable, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { Briefcase, XCircle, CheckCircle, Camera, GraduationCap, Coffee, RefreshCcw } from 'lucide-react';
 import { validateBagItems } from '../utils/electoralLogic';
 
@@ -55,6 +55,11 @@ const PollingSimulator = ({ onBagChange }) => {
     const [checked, setChecked] = useState(false);
     const [feedback, setFeedback] = useState([]);
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor)
+    );
+
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (over && over.id === 'pocket') {
@@ -86,7 +91,7 @@ const PollingSimulator = ({ onBagChange }) => {
                 <p style={{ color: 'var(--text-secondary)' }}>Drag the items into your pocket, then check if they are legal for entry!</p>
             </div>
 
-            <DndContext onDragEnd={handleDragEnd}>
+            <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
                 <div style={{ display: 'flex', gap: '4rem', alignItems: 'flex-start' }}>
                     <div role="list" aria-label="Available items to carry" style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                         {items.map(item => (

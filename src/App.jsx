@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { motion /* eslint-disable-line no-unused-vars */  } from 'framer-motion';
 import { Vote, Globe, Sparkles, LayoutGrid, Milestone, Gamepad2, Landmark, BarChart, RefreshCcw } from 'lucide-react';
-import Timeline from './components/Timeline';
-import InteractivePillars from './components/InteractivePillars';
+
+// Static Imports (Above the fold)
 import BackgroundEffect from './components/BackgroundEffect';
 
-// Modules
-import EligibilityCalculator from './components/EligibilityCalculator';
-import PolicyMatcher from './components/PolicyMatcher';
-import PollingSimulator from './components/PollingSimulator';
-import EVMSandbox from './components/EVMSandbox';
-import ResultVisualizer from './components/ResultVisualizer';
-import VoterEducation from './components/VoterEducation';
-import PollingStationLocator from './components/PollingStationLocator';
+// Modules (Lazy Loaded)
+const EligibilityCalculator = lazy(() => import('./components/EligibilityCalculator'));
+const PolicyMatcher = lazy(() => import('./components/PolicyMatcher'));
+const PollingSimulator = lazy(() => import('./components/PollingSimulator'));
+const EVMSandbox = lazy(() => import('./components/EVMSandbox'));
+const ResultVisualizer = lazy(() => import('./components/ResultVisualizer'));
+const VoterEducation = lazy(() => import('./components/VoterEducation'));
+const PollingStationLocator = lazy(() => import('./components/PollingStationLocator'));
+const Timeline = lazy(() => import('./components/Timeline'));
 
 const initialVotes = [
   { name: 'Unity Party', votes: 440, color: '#818cf8' },
@@ -141,51 +142,53 @@ function App() {
           </motion.article>
         </section>
 
-        <section id="interactive" aria-label="Simulation Modules" style={{ padding: '8rem 0' }}>
-          <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
-            <h2 style={{ fontSize: '3.5rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Interactive Modules</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }}>High-fidelity simulations covering every phase of the voting process.</p>
-          </div>
+        <Suspense fallback={<div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>Loading modules...</div>}>
+          <section id="interactive" aria-label="Simulation Modules" style={{ padding: '8rem 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+              <h2 style={{ fontSize: '3.5rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Interactive Modules</h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }}>High-fidelity simulations covering every phase of the voting process.</p>
+            </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12rem' }}>
-            <article id="step1" aria-labelledby="title-step1">
-              <ModuleHeader icon={<Milestone size={32} />} title="01. Eligibility Audit" desc="Perform a self-verification of your voting status based on citizenship and age." />
-              <EligibilityCalculator onStatusChange={(s) => updateCivicData('eligibility', s)} />
-            </article>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12rem' }}>
+              <article id="step1" aria-labelledby="title-step1">
+                <ModuleHeader icon={<Milestone size={32} />} title="01. Eligibility Audit" desc="Perform a self-verification of your voting status based on citizenship and age." />
+                <EligibilityCalculator onStatusChange={(s) => updateCivicData('eligibility', s)} />
+              </article>
 
-            <article id="step2" aria-labelledby="title-step2">
-              <ModuleHeader icon={<LayoutGrid size={32} />} title="02. Policy Sandbox" desc="Analyze candidates through a neutral policy-based comparison tool." />
-              <PolicyMatcher onMatchChange={(p) => updateCivicData('policyMatch', p)} />
-            </article>
+              <article id="step2" aria-labelledby="title-step2">
+                <ModuleHeader icon={<LayoutGrid size={32} />} title="02. Policy Sandbox" desc="Analyze candidates through a neutral policy-based comparison tool." />
+                <PolicyMatcher onMatchChange={(p) => updateCivicData('policyMatch', p)} />
+              </article>
 
-            <article id="step3" aria-labelledby="title-step3">
-              <ModuleHeader icon={<Gamepad2 size={32} />} title="03. Booth Protocol" desc="Learn the legal requirements for items allowed inside a polling station." />
-              <PollingSimulator onBagChange={(items) => updateCivicData('bagItems', items)} />
-            </article>
+              <article id="step3" aria-labelledby="title-step3">
+                <ModuleHeader icon={<Gamepad2 size={32} />} title="03. Booth Protocol" desc="Learn the legal requirements for items allowed inside a polling station." />
+                <PollingSimulator onBagChange={(items) => updateCivicData('bagItems', items)} />
+              </article>
 
-            <article id="step4" aria-labelledby="title-step4">
-              <ModuleHeader icon={<Landmark size={32} />} title="04. Voting Simulation" desc="Practice casting a digital ballot on a realistic Electronic Voting Machine." />
-              <EVMSandbox onVote={handleVote} isConfirmedGlobal={hasVoted} />
-            </article>
+              <article id="step4" aria-labelledby="title-step4">
+                <ModuleHeader icon={<Landmark size={32} />} title="04. Voting Simulation" desc="Practice casting a digital ballot on a realistic Electronic Voting Machine." />
+                <EVMSandbox onVote={handleVote} isConfirmedGlobal={hasVoted} />
+              </article>
 
-            <article id="step5" aria-labelledby="title-step5">
-              <ModuleHeader icon={<BarChart size={32} />} title="05. Live Audit" desc="Visualizing the transition from individual ballots to a national majority." />
-              <ResultVisualizer votesData={votesData} civicData={civicData} />
-            </article>
+              <article id="step5" aria-labelledby="title-step5">
+                <ModuleHeader icon={<BarChart size={32} />} title="05. Live Audit" desc="Visualizing the transition from individual ballots to a national majority." />
+                <ResultVisualizer votesData={votesData} civicData={civicData} />
+              </article>
 
-            <article id="extra1">
-              <PollingStationLocator />
-            </article>
+              <article id="extra1">
+                <PollingStationLocator />
+              </article>
 
-            <article id="extra2">
-              <VoterEducation />
-            </article>
-          </div>
-        </section>
+              <article id="extra2">
+                <VoterEducation />
+              </article>
+            </div>
+          </section>
 
-        <section id="timeline" aria-label="Democratic Lifecycle" style={{ padding: '8rem 0' }}>
-          <Timeline />
-        </section>
+          <section id="timeline" aria-label="Democratic Lifecycle" style={{ padding: '8rem 0' }}>
+            <Timeline />
+          </section>
+        </Suspense>
 
       </main>
 
