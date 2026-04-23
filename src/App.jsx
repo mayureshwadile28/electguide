@@ -14,6 +14,7 @@ const ResultVisualizer = lazy(() => import('./components/ResultVisualizer'));
 const VoterEducation = lazy(() => import('./components/VoterEducation'));
 const PollingStationLocator = lazy(() => import('./components/PollingStationLocator'));
 const Timeline = lazy(() => import('./components/Timeline'));
+const InteractivePillars = lazy(() => import('./components/InteractivePillars'));
 
 const initialVotes = [
   { name: 'Unity Party', votes: 440, color: '#818cf8' },
