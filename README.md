@@ -57,18 +57,22 @@ The journey concludes with a comprehensive data visualization suite:
 ## 🛠️ Performance & Testing Standards
 
 ### 1. Robust Automated Testing
-The project includes a **Vitest-driven test suite** that validates:
-- **Electoral Logic**: 100% coverage of eligibility and matching algorithms.
-- **UI Integrity**: Component-level audits for rendering and state transitions.
+The project includes an **exhaustive Vitest-driven test suite** (15 tests) that validates:
+- **Electoral Logic**: Comprehensive coverage of eligibility rules, matching algorithms, and edge cases.
+- **UI Integrity & Integration**: Asynchronous integration tests simulating complex user flows, rendering, and state transitions.
 
-### 2. Accessibility landmarks (WCAG)
+### 2. Accessibility landmarks (WCAG 2.1)
 We treat accessibility as a Tier-1 feature.
 - **Self-Documenting Roles**: Every card is a `region`, every list is a `listitem`.
 - **Aura-Labels**: Interactive elements feature descriptive labels specifically for `screen-readers`.
+- **Dynamic Updates**: `aria-live` regions provide real-time feedback.
+- **Keyboard Navigation**: 100% keyboard navigability, including complex drag-and-drop interactions via KeyboardSensors.
 
 ### 3. Security & Scalability
+- **Strict Content Security Policy (CSP)**: Robust CSP implemented to prevent XSS and unauthorized data execution.
+- **Route-Level Code Splitting**: Implementation of `React.lazy` and `<Suspense>` to drastically reduce initial bundle size and improve Load Time performance.
 - **Credential Protection**: Strictly enforced `.env` masking.
-- **Glassmorphic Optimization**: Optimized CSS blurs and transitions for zero-lag mobile performance.
+- **Glassmorphic Optimization**: Optimized CSS blurs and transitions for zero-lag mobile performance, with expensive computations wrapped in `React.useMemo`.
 
 ---
 

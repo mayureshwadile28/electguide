@@ -57,7 +57,6 @@ const PollingStationLocator = () => {
                         loading="lazy"
                         allowFullScreen
                         src={mapUrl}
-                        sandbox="allow-scripts allow-same-origin allow-popups"
                         title="Electoral Map"
                     ></iframe>
                 </div>
