@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Vote, Globe, Sparkles, LayoutGrid, Milestone, Gamepad2, Landmark, BarChart, RefreshCcw } from 'lucide-react';
 import Timeline from './components/Timeline';
 import InteractivePillars from './components/InteractivePillars';
-import Timeline from './components/Timeline';
-import InteractivePillars from './components/InteractivePillars';
 import GoogleWorkspaceSidebar from './components/GoogleWorkspaceSidebar';
 
 // Modules
