@@ -1,5 +1,7 @@
 import React from 'react';
 import { Mail, Calendar, MessageSquare, ClipboardList, Info, HelpCircle } from 'lucide-react';
+/* eslint-disable no-unused-vars */
+import { motion } from 'framer-motion';
 
 const GoogleWorkspaceSidebar = () => {
     const services = [

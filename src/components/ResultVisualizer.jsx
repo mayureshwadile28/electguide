@@ -75,10 +75,7 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                                     </div>
                                     <div style={{ height: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '100px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
                                         <div
-
-
-
-                                            style={{ height: '100%', background: r.color, borderRadius: '100px' }}
+                                            style={{ width: `${(r.currentVotes / Math.max(...displayResults.map(res => res.votes), 1)) * 100}%`, height: '100%', background: r.color, borderRadius: '100px', transition: 'width 0.5s ease-out' }}
                                             role="progressbar"
                                             aria-valuenow={r.currentVotes}
                                             aria-valuemin="0"

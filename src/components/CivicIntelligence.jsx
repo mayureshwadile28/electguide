@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import React, { useState } from 'react';
 import { Search, MapPin, User, Calendar, ShieldCheck, Globe, Info, ExternalLink } from 'lucide-react';
 
