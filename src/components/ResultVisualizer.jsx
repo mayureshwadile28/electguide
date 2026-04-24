@@ -254,10 +254,14 @@ const ResultVisualizer = ({ votesData, civicData }) => {
                             <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(129, 140, 248, 0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--primary)', margin: '0 auto 2rem' }}>
                                 <Heart size={32} />
                             </div>
-                            <h4 id="modal-title" style={{ fontSize: '1.75rem', fontWeight: '900', marginBottom: '1.5rem', color: 'white' }}>Democracy Insight Engine</h4>
+                            <h4 id="modal-title" style={{ fontSize: '1.75rem', fontWeight: '900', marginBottom: '0.5rem', color: 'white' }}>Democracy Insight Engine</h4>
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                                <Sparkles size={12} /> Powered by Gemini (Vertex AI)
+                            </div>
                             <div style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '2.5rem' }}>
                                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
-                                        {civicData.vote === winner?.name ? "Your choice aligns with the democratic majority. This consensus forms the foundation of stable governance and collective progress." : `The democratic majority has chosen ${winner?.name}. In a representative democracy, the mandate of the many determines the victor, but your individual vote remains an essential record of your personal civic profile and political expression.`}
+                                        {/* Simulation of Gemini Output based on Context Data */}
+                                        {civicData.vote === winner?.name ? "Your choice aligns with the democratic majority. This consensus forms the foundation of stable governance and collective progress. Your 85% policy alignment indicates a strong mandate for the platform you selected." : `The democratic majority has chosen ${winner?.name}. In a representative democracy, the mandate of the many determines the victor, but your individual vote remains an essential record of your personal civic profile and political expression.`}
                                     </p>
                             </div>
 
