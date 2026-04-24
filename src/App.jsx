@@ -3,7 +3,9 @@ import { motion /* eslint-disable-line no-unused-vars */  } from 'framer-motion'
 import { Vote, Globe, Sparkles, LayoutGrid, Milestone, Gamepad2, Landmark, BarChart, RefreshCcw } from 'lucide-react';
 
 // Static Imports (Above the fold)
-import BackgroundEffect from './components/BackgroundEffect';
+import GoogleWorkspaceSidebar from './components/GoogleWorkspaceSidebar';
+import CivicIntelligence from './components/CivicIntelligence';
+import { initAnalytics } from './services/firebase';
 
 // Modules (Lazy Loaded)
 const EligibilityCalculator = lazy(() => import('./components/EligibilityCalculator'));
@@ -56,10 +58,14 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  React.useEffect(() => {
+    initAnalytics();
+  }, []);
+
   return (
     <div key={appKey} className="app-container" style={{ position: 'relative' }}>
-      <BackgroundEffect />
-      <div className="mesh-gradient" />
+            <div className="mesh-gradient" />
+      <GoogleWorkspaceSidebar />
 
       {/* Header - Semantic */}
       <header role="banner" className="glass-header" style={{
@@ -125,10 +131,10 @@ function App() {
           textAlign: 'center',
           padding: '4rem 0'
         }}>
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+          <article
+
+
+
           >
             <div role="status" aria-label="App Status" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', borderRadius: '100px', background: 'rgba(129, 140, 248, 0.1)', border: '1px solid rgba(129, 140, 248, 0.2)', color: 'var(--primary)', fontSize: '0.875rem', fontWeight: '600', marginBottom: '2rem' }}>
               <Sparkles size={16} aria-hidden="true" /> Advanced Election Resource
@@ -140,7 +146,7 @@ function App() {
             <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '800px', lineHeight: '1.8', marginBottom: '3.5rem' }}>
               A high-precision guide to the modern election process. From eligibility audits to live results visualization, experience every stage of the democratic lifecycle.
             </p>
-          </motion.article>
+          </article>
         </section>
 
         <Suspense fallback={<div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>Loading modules...</div>}>
@@ -151,6 +157,11 @@ function App() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12rem' }}>
+              <article id="civic-intel" aria-labelledby="title-civic">
+                <ModuleHeader icon={<Globe size={32} />} title="00. Civic Intelligence" desc="Access live institutional data about your local representatives and upcoming elections." />
+                <CivicIntelligence />
+              </article>
+
               <article id="step1" aria-labelledby="title-step1">
                 <ModuleHeader icon={<Milestone size={32} />} title="01. Eligibility Audit" desc="Perform a self-verification of your voting status based on citizenship and age." />
                 <EligibilityCalculator onStatusChange={(s) => updateCivicData('eligibility', s)} />
@@ -188,6 +199,10 @@ function App() {
 
           <section id="timeline" aria-label="Democratic Lifecycle" style={{ padding: '8rem 0' }}>
             <Timeline />
+          </section>
+
+          <section id="pillars" aria-label="Interactive Pillars" style={{ padding: '8rem 0' }}>
+            <InteractivePillars />
           </section>
         </Suspense>
 

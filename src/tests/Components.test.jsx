@@ -12,7 +12,6 @@ import ResultVisualizer from '../components/ResultVisualizer';
 import PollingStationLocator from '../components/PollingStationLocator';
 import Timeline from '../components/Timeline';
 import InteractivePillars from '../components/InteractivePillars';
-import BackgroundEffect from '../components/BackgroundEffect';
 
 describe('VoterEducation Component', () => {
     it('renders with correct accessibility labels for screen readers', () => {
@@ -156,12 +155,5 @@ describe('InteractivePillars Component', () => {
     it('renders InteractivePillars', () => {
         render(<InteractivePillars />);
         expect(screen.getByText(/Fair Rules/i)).toBeDefined();
-    });
-});
-
-describe('BackgroundEffect Component', () => {
-    it('renders BackgroundEffect', () => {
-        const { container } = render(<BackgroundEffect />);
-        expect(container.firstChild).toBeDefined();
     });
 });
